@@ -21,7 +21,7 @@ public class SignServlet extends HttpServlet{
 		response.setContentType("text/html;charset=utf-8");
 		
 		// 用来登陆的账号密码
-		int user_ID = 1234570;
+		int user_ID = 1234571;
 		String userAccount = request.getParameter("userAccount");	// 用户名
 		String userPass = request.getParameter("userPass");		// 密码
 		userPass = getMD5(userPass); 

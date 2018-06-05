@@ -56,4 +56,56 @@ public class TinyDao {
 		return conList;
 		
 	}
+
+	public int insert(String itemName, String item_id, String lastDate, String param1, String param2) {
+		int res = 0;
+		
+		Connection con = JdbcUtils_Mysql.getConnection();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String sql="insert into klilai_tiny(TINY_NAME, TINY_ID, TINY_LAST_DATE, TINY_PARAM_1, TINY_PARAM_2) values(?, ?, ?, ?, ?)";
+		try{
+			pst=con.prepareStatement(sql);
+			pst.setString(1, itemName);
+			pst.setString(2, item_id);
+			pst.setString(3, lastDate);
+			pst.setString(4, param1);
+			pst.setString(5, param2);
+			
+			pst.executeUpdate();
+			res = 1;
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtils_Mysql.close(con, pst, rs);
+		}
+		
+		return res;
+	}
+
+	public int update(String sql, String data, String id) {
+		int res = 0;
+		
+		Connection con = JdbcUtils_Mysql.getConnection();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String sql_real = sql;
+
+		try{
+			pst = con.prepareStatement(sql_real);
+			pst.setString(1, data);
+			pst.setString(2, id);
+			
+			pst.executeUpdate();
+			res = 1;
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtils_Mysql.close(con, pst, rs);
+		}
+		
+		return res;
+	}
 }
