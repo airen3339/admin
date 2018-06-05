@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>admin</display-name>
+  
+  
+  
+  
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>controller.LoginServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>SignServlet</servlet-name>
+    <servlet-class>controller.SignServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>SignServlet</servlet-name>
+    <url-pattern>/SignServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>QueryServlet</servlet-name>
+    <servlet-class>controller.QueryServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>QueryServlet</servlet-name>
+    <url-pattern>/QueryServlet</url-pattern>
+</servlet-mapping>
+
+
+
+
+<servlet>
+    <servlet-name>ExitServlet</servlet-name>
+    <servlet-class>controller.ExitServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ExitServlet</servlet-name>
+    <url-pattern>/ExitServlet</url-pattern>
+</servlet-mapping>
+
+
+
+<servlet>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>controller.UploadServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/UploadServlet</url-pattern>
+</servlet-mapping>
+
+
+
+<servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>controller.ImageServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/ImageServlet</url-pattern>
+</servlet-mapping>	
+
+
+
+<servlet>
+    <servlet-name>ContractServlet</servlet-name>
+    <servlet-class>controller.ContractServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ContractServlet</servlet-name>
+    <url-pattern>/ContractServlet</url-pattern>
+</servlet-mapping>	
+  
+
+<servlet>
+    <servlet-name>ProblemServlet</servlet-name>
+    <servlet-class>controller.ProblemServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ProblemServlet</servlet-name>
+    <url-pattern>/ProblemServlet</url-pattern>
+</servlet-mapping>	
+
+
+<servlet>
+    <servlet-name>ProjectServlet</servlet-name>
+    <servlet-class>controller.ProjectServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ProjectServlet</servlet-name>
+    <url-pattern>/ProjectServlet</url-pattern>
+</servlet-mapping>	
+  
+  
+  
+  <servlet>
+    <servlet-name>TinyServlet</servlet-name>
+    <servlet-class>controller.TinyServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>TinyServlet</servlet-name>
+    <url-pattern>/TinyServlet</url-pattern>
+</servlet-mapping>	
+
+
+  
+   <filter>         
+    <filter-name>CORS</filter-name>  
+    <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>  
+    <init-param>  
+     <param-name>cors.allowOrigin</param-name>  
+        <param-value>*</param-value>  
+    </init-param>  
+    <init-param>  
+     <param-name>cors.supportedMethods</param-name>  
+        <param-value>GET, POST, HEAD, PUT, DELETE</param-value>  
+    </init-param>  
+    <init-param>  
+     <param-name>cors.supportedHeaders</param-name>  
+        <param-value>Accept, Origin, X-Requested-With, Content-Type, Last-Modified</param-value>  
+    </init-param>  
+    <init-param>  
+        <param-name>cors.exposedHeaders</param-name>  
+        <param-value>Set-Cookie</param-value>  
+    </init-param>  
+    <init-param>  
+        <param-name>cors.supportsCredentials</param-name>  
+        <param-value>true</param-value>  
+    </init-param>  
+</filter>  
+  
+<filter-mapping>  
+    <filter-name>CORS</filter-name>  
+    <url-pattern>/*</url-pattern>  
+</filter-mapping>  
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
