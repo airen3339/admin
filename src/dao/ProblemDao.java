@@ -31,17 +31,22 @@ public class ProblemDao {
 				return null;
 			}
 			
-			String Problem_ID, Problem_Name, Problem_Content, Problem_Owner_ID, Problem_Owner, Problem_Last_Modify;
+			String Problem_ID, Problem_Name, Problem_Content, 
+				Problem_Desc, Problem_Solve,
+				Problem_Owner_ID, Problem_Owner, Problem_Last_Modify;
 			
 			while (rs.next()) {
 				Problem_ID = rs.getString("Problem_ID");
 				Problem_Name = rs.getString("Problem_Name");
+				Problem_Desc = rs.getString("PROBLEM_DESC");
+				Problem_Solve = rs.getString("PROBLEM_SOLVE");
 				Problem_Content = rs.getString("Problem_Content");
 				Problem_Owner_ID = rs.getString("Problem_Owner_ID");
 				Problem_Owner = rs.getString("Problem_Owner");
 				Problem_Last_Modify = rs.getString("Problem_Last_Modify");
 				
-				proList.add(new Problem(Problem_ID, Problem_Name, Problem_Content, Problem_Owner_ID, Problem_Owner, Problem_Last_Modify));
+				proList.add(new Problem(Problem_ID, Problem_Name, Problem_Desc, Problem_Solve, 
+								Problem_Content, Problem_Owner_ID, Problem_Owner, Problem_Last_Modify));
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -77,7 +82,7 @@ public class ProblemDao {
 			
 			while (rs.next()) {
 				String P_ID = rs.getString("PROBLEM_ID");
-				problem = new Problem(P_ID, null, null, null, null, null);
+				problem = new Problem(P_ID, null, null, null, null, null, null, null);
 			}
 			
 		}catch(SQLException e) {
@@ -88,20 +93,25 @@ public class ProblemDao {
 		return problem;
 	}
 
-	public void releaseRecord(String p_id, String p_name, String p_person, String p_personID){
+	public void releaseRecord(String p_id, String p_name, String p_desc, String p_solve, String p_person, String p_personID){
 		
 		Connection con = JdbcUtils_Mysql.getConnection();
 		PreparedStatement pst = null;
-		String sql = "update klilai_problem set PROBLEM_NAME = ?, PROBLEM_OWNER = ?, PROBLEM_OWNER_ID = ?, PROBLEM_LAST_MODIFY = ? where PROBLEM_ID = ?";
+		String sql = "update klilai_problem set PROBLEM_NAME = ?, "
+						+ "PROBLEM_DESC = ?, PROBLEM_SOLVE = ?, "
+						+ "PROBLEM_OWNER = ?, PROBLEM_OWNER_ID = ?, "
+						+ "PROBLEM_LAST_MODIFY = ? where PROBLEM_ID = ?";
 		try{
 			pst = con.prepareStatement(sql);
 			pst.setString(1, p_name);
-			pst.setString(2, p_person);
-			pst.setString(3, p_personID);
+			pst.setString(2, p_desc);
+			pst.setString(3, p_solve);
+			pst.setString(4, p_person);
+			pst.setString(5, p_personID);
 			
 			DateTime dt = new DateTime();
-			pst.setString(4, dt.getCurrentDate());
-			pst.setString(5, p_id);
+			pst.setString(6, dt.getCurrentDate());
+			pst.setString(7, p_id);
 			
 			System.out.println();
 			

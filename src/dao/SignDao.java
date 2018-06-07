@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import beans.User;
 import utils.JdbcUtils_Oracle;
 
 public class SignDao {
@@ -55,7 +56,7 @@ public class SignDao {
 			
 			pst.executeUpdate();
 			con.commit();
-			
+			res = 1;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -82,7 +83,7 @@ public class SignDao {
 			
 			pst.executeUpdate();
 			con.commit();
-			
+			res = 1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,5 +93,98 @@ public class SignDao {
 		
 		return res;
 	}
+
+	// 判断用户ID是否重复
+	public int isRepeated(int id) {
+		int res = 0;
+		
+		Connection con=JdbcUtils_Oracle.getConnection();
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		String sql="select * from ORG_EMPLOYEE where EMP_ID = ?";
+		User user=null;
+		try {
+			pst=con.prepareStatement(sql);
+			pst.setInt(1, id);
+			rs=pst.executeQuery();
+			
+			
+			if (rs==null) {
+				return 0;	// 没有该ID存在，说明可以使用。
+			}
+			if (rs.next()) {
+				String name = rs.getString("EMP_NAME");
+				System.out.println(name);
+				return 1;	// 有ID存在，不能使用，重复了
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JdbcUtils_Oracle.close(con, pst, rs);
+		}
+		
+		return res;
+	}
 	
+	// 判断用户名是否重复
+	public int isRepeatedUserAccounts(String account) {
+		int res = 0;
+		
+		Connection con=JdbcUtils_Oracle.getConnection();
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		String sql="select * from ORG_EMPLOYEE where USERACCOUNTS = ?";
+		try {
+			pst=con.prepareStatement(sql);
+			pst.setString(1, account);
+			rs=pst.executeQuery();
+			
+			
+			if (rs==null) {
+				return 0;	// 没有该ID存在，说明可以使用。
+			}
+			if (rs.next()) {
+				String name = rs.getString("USERACCOUNTS");
+				System.out.println(name);
+				return 1;	// 有ID存在，不能使用，重复了
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JdbcUtils_Oracle.close(con, pst, rs);
+		}
+		
+		return res;
+	}
+
+	
+	public int isSimpleNameRepeat(String simpleName) {
+		int res = 0;
+		
+		Connection con=JdbcUtils_Oracle.getConnection();
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		String sql="select * from ORG_EMPLOYEE where USERSIMPLENAME = ?";
+		try {
+			pst=con.prepareStatement(sql);
+			pst.setString(1, simpleName);
+			rs=pst.executeQuery();
+			
+			
+			if (rs==null) {
+				return 0;	// 没有该ID存在，说明可以使用。
+			}
+			if (rs.next()) {
+				String name = rs.getString("USERSIMPLENAME");
+				System.out.println(name);
+				return 1;	// 有ID存在，不能使用，重复了
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JdbcUtils_Oracle.close(con, pst, rs);
+		}
+		
+		return res;
+	}
 }

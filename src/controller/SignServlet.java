@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +20,19 @@ public class SignServlet extends HttpServlet{
 		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		SignDao signDao = new SignDao();
+		
 		
 		// 用来登陆的账号密码
-		int user_ID = 1234571;
+        int user_ID = getRandom();
+        int resRepeat = signDao.isRepeated(user_ID);
+        while(resRepeat != 0) {
+        	user_ID = getRandom();
+        	resRepeat = signDao.isRepeated(user_ID);
+        	System.out.println(user_ID);
+        }
+        
+//		int user_ID = 1234571;
 		String userAccount = request.getParameter("userAccount");	// 用户名
 		String userPass = request.getParameter("userPass");		// 密码
 		userPass = getMD5(userPass); 
@@ -34,10 +45,10 @@ public class SignServlet extends HttpServlet{
 		// 用户所属组织（访客）
 		int user_organizeID = Integer.parseInt(request.getParameter("user_organizeID"));
 		
-		SignDao signDao = new SignDao();
+		
 		int resBasic = signDao.addUserBasic(user_ID, userName, user_sex, userAccount, userPass, user_simpleName);
 		int resOrg = signDao.addUserOrganization(user_organizeID, user_ID);
-		
+		System.out.println("resBasic: " + resBasic + ", resOrg: " + resOrg);
 		JSONObject jsonObject = new JSONObject();
 		if(resBasic == 1 && resOrg == 1) {
 			jsonObject.put("status", 1);
@@ -48,6 +59,12 @@ public class SignServlet extends HttpServlet{
 		}
 		response.getWriter().write(jsonObject.toString());
 	}  
+	
+	public static int getRandom() {
+		Random random = new Random();
+		int max=1000000, min=100000;
+        return random.nextInt(max)%(max-min+1) + min;
+	}
 
 	//生成MD5  
     public static String getMD5(String message) {  

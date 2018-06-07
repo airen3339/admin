@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import utils.FileTransfer;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -108,31 +109,54 @@ public class UploadServlet extends HttpServlet{
                     String newFileName = new Date().getTime() + suffix;  
                     System.out.println("FileName: " + fileName + "  Ext Name: " + suffix + "  New FileName: " + newFileName);// image\1478509873038.jpg  
                     
-                    
                     // 如果目标保存路径不为空，则将文件保存到本地指定目录
                     if(savePath != ""){
+                    	// 上传到数据库的文件
                     	File tarFile = new File(savePath + '\\' + newFileName);  
-                        System.out.println(tarFile.getAbsolutePath()); 
+                        System.out.println("finalPath: " + tarFile.getAbsolutePath()); 
                         item.write(tarFile);
                         item.delete();	//删除处理文件上传时生成的临时文件
                         
+
                         // 操纵数据库
                         if(fileType.equals("image")){
                         	ImageDao imagefoDao = new ImageDao();
                             imagefoDao.insert(newFileName, "Images/" + newFileName , "2MB", suffix, "Http://192.168.1.113:7001/defaultroot/xxx", null);
+                            
+                            // 生成回执信息
+                        	message = "file upload success";
+                            jsonObject.put("status", 1);
+                            jsonObject.put("fileType", fileType);
+                            jsonObject.put("FileName", fileName);
+                    		jsonObject.put("msg", message);
                         }else if(fileType.equals("file")){
-                        	ProblemDao proDao = new ProblemDao();
-                        	Problem problem = proDao.createRecord("Files/" + newFileName);
-                        	jsonObject.put("p_id", problem.getProblem_ID());
-                        	System.out.println("i have printed p_id");
-                        }
+                        	// 转换名称
+                        	try {
+                        		FileTransfer fileTransfer = new FileTransfer();
+                                fileTransfer.office2PDF(savePath + '\\' + newFileName, savePath + '\\', ".pdf");
+                                // 留在本地用来备份的文件，防止删除服务器文件会丢失
+                                String backupFilePath = "D:\\Code\\Java\\admin\\WebContent\\Files";
+                                fileTransfer.office2PDF(savePath + '\\' + newFileName, backupFilePath + '\\', ".pdf");
+                                
+                            	ProblemDao proDao = new ProblemDao();
+                            	// 往数据库中插入已经转换完毕的pdf文件
+                            	Problem problem = proDao.createRecord("Files/" + newFileName.substring(0, newFileName.lastIndexOf(".")) + ".pdf");
+                            	jsonObject.put("p_id", problem.getProblem_ID());
+                            	
+                            	// 生成回执信息
+                            	message = "file upload success";
+                                jsonObject.put("status", 1);
+                                jsonObject.put("fileType", fileType);
+                                jsonObject.put("FileName", fileName);
+                        		jsonObject.put("msg", message);
+                        		
+                        	}catch (Exception e) {
+                        		message = "file upload success, but convert failed";
+                                jsonObject.put("status", 0);
+                                jsonObject.put("msg", message);
+                        	}
                         
-                        // 生成回执信息
-                    	message = "file upload success";
-                        jsonObject.put("status", 1);
-                        jsonObject.put("fileType", fileType);
-                        jsonObject.put("FileName", fileName);
-                		jsonObject.put("msg", message);
+                        }
                 		response.getWriter().write(jsonObject.toString());
                     }else {
                     	System.out.print("savePath is not exist yet");

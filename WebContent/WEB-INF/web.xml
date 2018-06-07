@@ -24,6 +24,14 @@
     <url-pattern>/SignServlet</url-pattern>
 </servlet-mapping>
 
+  <servlet>
+    <servlet-name>RepeatServlet</servlet-name>
+    <servlet-class>controller.RepeatServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>RepeatServlet</servlet-name>
+    <url-pattern>/RepeatServlet</url-pattern>
+</servlet-mapping>
 
 <servlet>
     <servlet-name>QueryServlet</servlet-name>
