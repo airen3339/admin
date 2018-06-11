@@ -31,8 +31,6 @@ public class SignServlet extends HttpServlet{
         	resRepeat = signDao.isRepeated(user_ID);
         	System.out.println(user_ID);
         }
-        
-//		int user_ID = 1234571;
 		String userAccount = request.getParameter("userAccount");	// 用户名
 		String userPass = request.getParameter("userPass");		// 密码
 		userPass = getMD5(userPass); 

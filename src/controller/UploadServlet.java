@@ -115,6 +115,9 @@ public class UploadServlet extends HttpServlet{
                     	File tarFile = new File(savePath + '\\' + newFileName);  
                         System.out.println("finalPath: " + tarFile.getAbsolutePath()); 
                         item.write(tarFile);
+                        String backupFilePath = "D:\\Code\\Java\\admin\\WebContent\\Files";
+                        File backupFile = new File(backupFilePath + '\\' + newFileName);
+                        item.write(backupFile);
                         item.delete();	//删除处理文件上传时生成的临时文件
                         
 
@@ -132,11 +135,16 @@ public class UploadServlet extends HttpServlet{
                         }else if(fileType.equals("file")){
                         	// 转换名称
                         	try {
-                        		FileTransfer fileTransfer = new FileTransfer();
-                                fileTransfer.office2PDF(savePath + '\\' + newFileName, savePath + '\\', ".pdf");
-                                // 留在本地用来备份的文件，防止删除服务器文件会丢失
-                                String backupFilePath = "D:\\Code\\Java\\admin\\WebContent\\Files";
-                                fileTransfer.office2PDF(savePath + '\\' + newFileName, backupFilePath + '\\', ".pdf");
+                        		// 如果上传的文件不是pdf文件，转换为pdf并备份
+                        		if(!suffix.equals(".pdf")) {
+                        			FileTransfer fileTransfer = new FileTransfer();
+                                    fileTransfer.office2PDF(savePath + '\\' + newFileName, savePath + '\\', ".pdf");
+                                    
+                                    // 留在本地用来备份的文件，防止删除服务器文件会丢失
+//                                    String backupFilePath = "D:\\Code\\Java\\admin\\WebContent\\Files";
+                                    fileTransfer.office2PDF(savePath + '\\' + newFileName, backupFilePath + '\\', ".pdf");
+                        		}
+                        		
                                 
                             	ProblemDao proDao = new ProblemDao();
                             	// 往数据库中插入已经转换完毕的pdf文件

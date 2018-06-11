@@ -87,6 +87,14 @@
     <url-pattern>/ContractServlet</url-pattern>
 </servlet-mapping>	
   
+ <servlet>
+    <servlet-name>BookServlet</servlet-name>
+    <servlet-class>controller.BookServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>BookServlet</servlet-name>
+    <url-pattern>/BookServlet</url-pattern>
+</servlet-mapping>	
 
 <servlet>
     <servlet-name>ProblemServlet</servlet-name>
@@ -118,6 +126,17 @@
     <url-pattern>/TinyServlet</url-pattern>
 </servlet-mapping>	
 
+
+
+
+<servlet>
+    <servlet-name>BitServlet</servlet-name>
+    <servlet-class>controller.BitServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>BitServlet</servlet-name>
+    <url-pattern>/BitServlet</url-pattern>
+</servlet-mapping>	
 
   
    <filter>         
